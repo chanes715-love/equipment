@@ -3,24 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>設備借用系統</title>
+  <title>教學設備與專科教室借用系統</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700&display=swap" rel="stylesheet">
-  
   <style>
     :root { 
-      --primary: #128c7e; /* 湖水綠 (主色調) */
-      --primary-light: #20b2aa;
-      --bg: #e0f7fa; /* 淺天空藍背景 */
+      /* 清新湖水綠色系 */
+      --primary: #00838f; 
+      --primary-light: #4fb3bf;
+      --bg: #b3e5fc; /* 天空藍背景 */
       --container-bg: #ffffff;
-      --text-dark: #0f5132;
-      --success: #27ae60; 
-      --danger: #e74c3c; 
-      --past: #dcdde1; 
-      --gray: #95a5a6; 
-      --admin-purple: #00796b; 
+      --text-dark: #263238;
+      --success: #2e7d32; 
+      --danger: #c62828; 
+      --past: #cfd8dc; 
+      --gray: #78909c; 
+      --admin-purple: #00695c; 
       --admin-bg: #e0f2f1;     
     }
     
@@ -36,6 +33,7 @@
 
     h1, h2, h3, .app-title { font-family: 'Fredoka', 'Microsoft JhengHei', sans-serif; color: var(--text-dark); }
 
+    /* 平板漂浮動畫 */
     @keyframes float {
       0% { transform: translateY(0px) rotate(0deg); }
       50% { transform: translateY(-15px) rotate(3deg); }
@@ -54,20 +52,22 @@
       max-width: 1000px;
       margin: 30px auto;
       z-index: 10;
-      filter: drop-shadow(0 15px 30px rgba(18, 140, 126, 0.2)); 
+      filter: drop-shadow(0 15px 30px rgba(0, 131, 143, 0.2)); 
     }
 
+    /* 雲朵形狀的頂部 */
     .wavy-top {
       width: 100%;
       height: 60px;
-      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path fill="%23ffffff" d="M0,60 Q120,0 240,60 T480,60 T720,60 T960,60 T1200,60 T1440,60 L1440,100 L0,100 Z"></path></svg>') no-repeat bottom;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path fill="%23ffffff" d="M0,40 Q60,0 120,40 T240,40 T360,40 T480,40 T600,40 T720,40 T840,40 T960,40 T1080,40 T1200,40 T1320,40 T1440,40 L1440,100 L0,100 Z"></path></svg>') no-repeat bottom;
       background-size: 100% 60px;
     }
 
+    /* 木紋形狀的底部 */
     .wavy-bottom {
       width: 100%;
       height: 45px;
-      background-color: #e59866;
+      background-color: #d4a373; /* 木頭底色 */
       background-image: repeating-linear-gradient(15deg, transparent, transparent 10px, rgba(0,0,0,0.04) 10px, rgba(0,0,0,0.04) 20px), repeating-linear-gradient(-15deg, transparent, transparent 15px, rgba(0,0,0,0.02) 15px, rgba(0,0,0,0.02) 30px);
       border-bottom-left-radius: 12px;
       border-bottom-right-radius: 12px;
@@ -86,26 +86,26 @@
 
     .app-header { 
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; 
-      margin-bottom: 25px; border-bottom: 3px dashed #e0f2f1; padding-bottom: 15px;
+      margin-bottom: 25px; border-bottom: 3px dashed #b2ebf2; padding-bottom: 15px;
     }
-    .app-title { font-size: 2.2rem; margin: 0; color: var(--primary); letter-spacing: 1px; }
+    .app-title { font-size: 2.2rem; margin: 0; color: var(--primary); letter-spacing: 1px; font-weight: bold;}
     
     .app-nav { display: flex; gap: 10px; flex-grow: 1; justify-content: center; overflow-x: auto; white-space: nowrap; margin-top: 10px;}
-    .nav-item { padding: 10px 20px; cursor: pointer; font-weight: 700; color: #777; background: #f0f7f4; border-radius: 30px; transition: 0.3s; font-size: 11pt; border: 2px solid transparent;}
-    .nav-item:hover { background: #e0f2f1; transform: translateY(-2px); }
-    .nav-item.active { background: var(--primary); color: white; border-color: var(--primary-light); box-shadow: 0 4px 10px rgba(18, 140, 126, 0.4); }
+    .nav-item { padding: 10px 20px; cursor: pointer; font-weight: 700; color: #777; background: #e0f7fa; border-radius: 30px; transition: 0.3s; font-size: 11pt; border: 2px solid transparent;}
+    .nav-item:hover { background: #b2ebf2; transform: translateY(-2px); }
+    .nav-item.active { background: var(--primary); color: white; border-color: var(--primary-light); box-shadow: 0 4px 10px rgba(0, 131, 143, 0.4); }
     .nav-item.admin-nav { background: #f5f5f5; color: var(--admin-purple); display: none; }
     .nav-item.admin-nav.active { background: var(--admin-purple); color: white; border-color: var(--admin-purple); }
 
     .header-user { font-size: 11pt; color: #fff; background: var(--primary-light); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 10px; font-weight: 700;}
-    .btn-logout { background: #ffccbc; border: 1px solid #ffab91; color: #d84315; font-weight: bold; cursor: pointer; padding: 4px 10px; border-radius: 15px; font-size: 10pt; transition: 0.2s;}
-    .btn-logout:hover { background: #ffab91; }
+    .btn-logout { background: #ffcdd2; border: 1px solid #ef9a9a; color: #c62828; font-weight: bold; cursor: pointer; padding: 4px 10px; border-radius: 15px; font-size: 10pt; transition: 0.2s;}
+    .btn-logout:hover { background: #ef9a9a; }
 
     .view-section { display: none; animation: fadeIn 0.4s ease; }
     .view-section.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .booking-controls { display:grid; grid-template-columns: 1fr 1fr; gap:15px; background:var(--bg); padding:20px; border-radius:15px; margin-bottom:20px; border: 2px solid #b2ebf2; }
+    .booking-controls { display:grid; grid-template-columns: 1fr 1fr; gap:15px; background: #e0f7fa; padding:20px; border-radius:15px; margin-bottom:20px; border: 2px solid #b2ebf2; }
     .booking-controls label { font-weight: 700; color: var(--primary); font-size: 11pt; }
     .booking-controls input, .booking-controls select { width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #b2ebf2; margin-top: 8px; box-sizing: border-box; font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 11pt; color: var(--primary); }
     
@@ -117,8 +117,8 @@
     .daily-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .daily-tag { background: white; border: 2px solid #8bc34a; color: #33691e; padding: 6px 12px; border-radius: 20px; font-size: 10pt; font-weight: bold; }
 
-    table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 15px; table-layout: fixed; background: white; border-radius: 12px; overflow: hidden; border: 2px solid #e0f2f1; }
-    th, td { padding: 15px 8px; text-align: center; border-bottom: 1px solid #e0f2f1; border-right: 1px solid #e0f2f1; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 15px; table-layout: fixed; background: white; border-radius: 12px; overflow: hidden; border: 2px solid #b2ebf2; }
+    th, td { padding: 15px 8px; text-align: center; border-bottom: 1px solid #e0f7fa; border-right: 1px solid #e0f7fa; }
     th { background: #e0f7fa; color: var(--primary); line-height: 1.4; font-weight: 700; font-size: 12pt; border-bottom: 2px solid #b2ebf2; } 
     th:last-child, td:last-child { border-right: none; }
     tr:last-child td { border-bottom: none; }
@@ -130,7 +130,7 @@
     .btn-book:hover { transform: translateY(-2px); filter: brightness(1.1); }
     .cell-mine { color: white; font-weight: bold; background: var(--primary); padding: 6px; border: 2px solid var(--primary-light); width: 90%; display:inline-block; border-radius: 8px; }
     .cell-booked { color: #fff; font-weight: bold; background: var(--danger); padding: 6px; width: 90%; display:inline-block; border-radius: 8px; }
-    .cell-past { background: var(--past); color: #777; border-radius: 8px; padding: 6px; display: inline-block; width: 90%; font-weight: 600;}
+    .cell-past { background: var(--past); color: #555; border-radius: 8px; padding: 6px; display: inline-block; width: 90%; font-weight: 600;}
     .cell-restricted { color: #888; font-size: 10pt; background: #f5f5f5; font-weight: 600; border-radius: 8px; padding: 6px; }
 
     .admin-panel { background: var(--admin-bg); padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 2px dashed #80cbc4; }
@@ -142,47 +142,70 @@
     .tab { padding: 10px 25px; cursor: pointer; border-radius: 30px; font-weight: 700; color: #94a3b8; background: #f8fafc; border: 2px solid #e2e8f0; transition: 0.3s; }
     .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
     
-    .card { border-left: 8px solid var(--primary-light); background: #fff; padding: 20px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; border: 1px solid #e0f2f1;}
+    .card { border-left: 8px solid var(--primary-light); background: #fff; padding: 20px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; border: 1px solid #e0f7fa;}
     .card.past { border-left-color: var(--gray); background: #f8fafc; }
     .card.cancelled { border-left-color: var(--danger); background: #fff5f5; }
+    .btn-cancel { background: white; color: var(--danger); border: 2px solid var(--danger); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+    .btn-cancel:hover { background: var(--danger); color: white; }
+    .status-badge { padding: 6px 12px; border-radius: 8px; font-size: 10pt; font-weight: bold; display: inline-block; }
+    .status-cancelled { background: #ffebee; color: var(--danger); border: 1px solid #ffcdd2; }
     
     #loginOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:9998; align-items:center; justify-content:center; }
     .login-wrapper { position: relative; width: 350px; max-width: 90%; }
-    .login-box { background: var(--container-bg); padding: 40px 30px; border-radius: 20px; box-shadow: 0 20px 50px rgba(18, 140, 126, 0.3); text-align: center; position: relative; z-index: 10; border-top: 8px solid var(--primary);}
+    .login-box { background: var(--container-bg); padding: 40px 30px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 131, 143, 0.3); text-align: center; position: relative; z-index: 10; border-top: 8px solid var(--primary);}
     .login-box h2 { color: var(--primary); margin-top: 0; margin-bottom: 25px; font-size: 1.8rem; }
     .login-input { width: 100%; padding: 14px; border: 2px solid #b2ebf2; border-radius: 10px; box-sizing: border-box; font-size: 11pt; font-family: 'Nunito', sans-serif; font-weight: 600; color: var(--text-dark);}
-    .login-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(18, 140, 126, 0.2); }
-    .btn-login { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: bold; font-size: 13pt; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(18, 140, 126, 0.3); letter-spacing: 1px;}
+    .login-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0, 131, 143, 0.2); }
+    .btn-login { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: bold; font-size: 13pt; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0, 131, 143, 0.3); letter-spacing: 1px;}
     .btn-login:hover { background: var(--primary-light); transform: translateY(-2px); }
 
-    #alertOverlay, #overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:999998 !important; backdrop-filter: blur(3px); }
-    #alertModal, #modal { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:30px; border-radius:20px; z-index:999999 !important; width:320px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); text-align: center; border-top: 8px solid var(--danger);}
+    /* 修復 z-index：確保 Modal 絕對在最上層 */
+    #alertOverlay, #overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:100000 !important; backdrop-filter: blur(3px); }
+    #alertModal, #modal { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:30px; border-radius:20px; z-index:100001 !important; width:320px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); text-align: center; border-top: 8px solid var(--danger);}
     #modal { border-top-color: var(--primary); }
     #alertMessage { font-size: 12pt; font-weight: 700; color: #333; line-height: 1.6; margin-bottom: 20px; white-space: pre-wrap; }
-    .btn-alert { background: var(--danger); color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; font-size: 12pt; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);}
+    .btn-alert { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; font-size: 12pt; box-shadow: 0 4px 10px rgba(0, 131, 143, 0.3);}
     .confirm-btns { display: flex; gap: 15px; margin-top: 20px; }
     .btn-cancel-modal, .btn-confirm-modal { padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; flex: 1; transition: 0.2s; border: none; font-size: 11pt;}
     .btn-cancel-modal { background: #f1f5f9; color: #64748b; }
     .btn-confirm-modal { background: var(--danger); color: white; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); }
     .modal-input { width: 100%; box-sizing: border-box; padding: 12px; margin-top: 8px; margin-bottom: 20px; border: 2px solid #b2ebf2; border-radius: 8px; font-size: 11pt; font-weight: 600; color: var(--primary); }
+
+    /* 後台管理看板專用 */
+    .admin-tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #b2dfdb; padding-bottom: 10px; overflow-x: auto; white-space: nowrap; }
+    .admin-tab { padding: 10px 20px; cursor: pointer; border-radius: 8px; font-weight: bold; background: #e0f2f1; color: var(--admin-purple); transition: 0.2s; }
+    .admin-tab.active { background: var(--admin-purple); color: white; }
+    .admin-card { border-left: 5px solid var(--admin-purple); background: #fff; padding: 15px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: block; }
+    .key-group { display: flex; gap: 5px; margin-top: 10px; }
+    .key-btn { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; font-size: 10pt; font-weight: bold; background: white; color: #666; transition: 0.2s; }
+    .key-btn.active-unlent { background: var(--gray); color: white; border-color: var(--gray); }
+    .key-btn.active-lent { background: var(--danger); color: white; border-color: var(--danger); }
+    .key-btn.active-returned { background: var(--success); color: white; border-color: var(--success); }
   </style>
 </head>
 <body>
 
+<!-- 平板漂浮圖案 (背景裝飾) -->
+<!-- 1. 直式黑邊彩繪螢幕 -->
 <div class="bg-illustration" style="top: 8%; left: 5%; width: 120px; height: 160px; animation-delay: 0s;">
   <svg viewBox="0 0 120 160" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="100" height="140" rx="8" fill="#1e293b"/><rect x="15" y="20" width="90" height="120" fill="#f8fafc"/><circle cx="60" cy="70" r="30" fill="#60a5fa" opacity="0.6"/><circle cx="80" cy="90" r="25" fill="#f87171" opacity="0.6"/><circle cx="40" cy="100" r="20" fill="#fbbf24" opacity="0.6"/><circle cx="60" cy="145" r="3" fill="#64748b"/></svg>
 </div>
-<div class="bg-illustration" style="top: 15%; right: 8%; width: 130px; height: 130px; animation-delay: 1.5s; transform: rotate(15deg);">
-  <svg viewBox="0 0 140 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="30" width="100" height="80" rx="6" fill="#e2e8f0"/><rect x="25" y="35" width="90" height="70" fill="#38bdf8"/><rect x="35" y="55" width="12" height="12" rx="2" fill="#ffffff"/><rect x="55" y="55" width="12" height="12" rx="2" fill="#f43f5e"/><rect x="75" y="55" width="12" height="12" rx="2" fill="#10b981"/><rect x="95" y="55" width="12" height="12" rx="2" fill="#eab308"/><line x1="20" y1="40" x2="25" y2="40" stroke="#94a3b8" stroke-width="2"/><line x1="20" y1="45" x2="25" y2="45" stroke="#94a3b8" stroke-width="2"/></svg>
+<!-- 2. 橫式白底滿版App -->
+<div class="bg-illustration" style="top: 15%; right: 8%; width: 150px; height: 110px; animation-delay: 1.5s; transform: rotate(15deg);">
+  <svg viewBox="0 0 160 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="140" height="100" rx="8" fill="#f1f5f9"/><rect x="15" y="15" width="130" height="90" fill="#38bdf8"/><rect x="25" y="25" width="15" height="15" rx="3" fill="#ffffff"/><rect x="50" y="25" width="15" height="15" rx="3" fill="#f43f5e"/><rect x="75" y="25" width="15" height="15" rx="3" fill="#10b981"/><rect x="100" y="25" width="15" height="15" rx="3" fill="#eab308"/><line x1="10" y1="60" x2="15" y2="60" stroke="#94a3b8" stroke-width="2"/></svg>
 </div>
+<!-- 3. 藍邊帶觸控筆 -->
 <div class="bg-illustration" style="bottom: 12%; left: 8%; width: 140px; height: 140px; animation-delay: 2.5s; transform: rotate(-10deg);">
   <svg viewBox="0 0 160 160" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="20" width="100" height="120" rx="6" fill="#3b82f6"/><rect x="35" y="25" width="90" height="110" fill="#ffffff"/><circle cx="70" cy="60" r="25" fill="#f87171" opacity="0.8"/><circle cx="90" cy="90" r="30" fill="#a3e635" opacity="0.7"/><path d="M 120 40 L 70 110" stroke="#1e40af" stroke-width="6" stroke-linecap="round"/><ellipse cx="123" cy="36" rx="4" ry="6" fill="#1e40af" transform="rotate(35 123 36)"/></svg>
 </div>
+<!-- 4. 附帶鍵盤支架的繪圖平板 -->
 <div class="bg-illustration" style="bottom: 18%; right: 6%; width: 150px; height: 110px; animation-delay: 0.5s;">
   <svg viewBox="0 0 160 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><polygon points="10,110 30,30 150,30 130,110" fill="#1e3a8a"/><rect x="25" y="35" width="115" height="70" rx="3" fill="#fed7aa" transform="skewX(-14)"/><rect x="50" y="45" width="60" height="40" rx="2" fill="#ffffff" transform="skewX(-14)"/><path d="M 60 70 Q 75 45 90 70 T 110 50" fill="none" stroke="#334155" stroke-width="3" stroke-linecap="round" transform="skewX(-14)"/><line x1="140" y1="20" x2="105" y2="75" stroke="#64748b" stroke-width="5" stroke-linecap="round"/><rect x="35" y="90" width="8" height="8" rx="2" fill="#3b82f6" transform="skewX(-14)"/><rect x="48" y="90" width="8" height="8" rx="2" fill="#f43f5e" transform="skewX(-14)"/><rect x="61" y="90" width="8" height="8" rx="2" fill="#eab308" transform="skewX(-14)"/></svg>
 </div>
 
+<!-- 登入畫面 -->
 <div id="loginOverlay">
+  <!-- 登入畫面的漂浮裝飾 -->
   <div class="bg-illustration" style="top: 10%; left: 10%; width: 150px; height: 150px; animation-delay: 1s;"><svg viewBox="0 0 160 160" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="20" width="100" height="120" rx="6" fill="#3b82f6"/><rect x="35" y="25" width="90" height="110" fill="#ffffff"/><circle cx="70" cy="60" r="25" fill="#f87171" opacity="0.8"/><circle cx="90" cy="90" r="30" fill="#a3e635" opacity="0.7"/><path d="M 120 40 L 70 110" stroke="#1e40af" stroke-width="6" stroke-linecap="round"/></svg></div>
   <div class="bg-illustration" style="bottom: 15%; right: 10%; width: 140px; height: 140px; animation-delay: 0.5s; transform: rotate(-20deg);"><svg viewBox="0 0 120 160" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="100" height="140" rx="8" fill="#1e293b"/><rect x="15" y="20" width="90" height="120" fill="#f8fafc"/><circle cx="60" cy="70" r="30" fill="#60a5fa" opacity="0.6"/><circle cx="80" cy="90" r="25" fill="#f87171" opacity="0.6"/><circle cx="40" cy="100" r="20" fill="#fbbf24" opacity="0.6"/></svg></div>
 
@@ -200,10 +223,12 @@
   </div>
 </div>
 
+<!-- 系統主畫面 -->
 <div id="mainApp" style="display:none;">
   <div class="app-wrapper">
     <div class="wavy-top"></div>
     <div class="main-content">
+      
       <div class="app-header">
         <h1 class="app-title">Lab Equipment 💻</h1>
         <div class="header-user">
@@ -222,7 +247,7 @@
         <span><b>代理模式：</b>您正以「<span id="proxyCurrentName" style="color:#d35400; text-decoration:underline;"></span>」身分操作。</span>
       </div>
 
-      <!-- Booking View -->
+      <!-- 區塊：我要預約 -->
       <div id="view-booking" class="view-section active">
         <div id="adminPanel" class="admin-panel" style="display:none;">
           <h3>👨‍💻 代客預約 / 身分切換</h3>
@@ -252,7 +277,7 @@
         <div id="tableBox" style="overflow-x:auto;"></div>
       </div>
 
-      <!-- My Records View -->
+      <!-- 區塊：我的紀錄 -->
       <div id="view-myrecords" class="view-section">
         <h2 style="margin-top: 0; margin-bottom: 25px;">預約清單</h2>
         <div class="tabs">
@@ -263,14 +288,15 @@
         <div id="list-past" style="display: none;"></div>
       </div>
 
-      <!-- Admin View -->
+      <!-- 區塊：管理後台 -->
       <div id="view-admin" class="view-section">
-        <h2 style="color:var(--admin-purple); margin-top:0;">👨‍‍💻 管理員看板</h2>
-        <div class="tabs" style="border-bottom-color: #b2dfdb;">
-          <div id="admin-t1" class="tab active" onclick="switchAdminTab(1)" style="background:var(--admin-purple); color:white; border-color:var(--admin-purple);">每日狀態</div>
-          <div id="admin-t2" class="tab" onclick="switchAdminTab(2)">禁借設定</div>
-          <div id="admin-t3" class="tab" onclick="switchAdminTab(3)">統計圖表</div>
+        <h2 style="color:var(--admin-purple); margin-top:0;">👨‍💻 管理員看板</h2>
+        <div class="admin-tabs">
+          <div id="admin-t1" class="admin-tab active" onclick="switchAdminTab(1)">每日借用動態</div>
+          <div id="admin-t2" class="admin-tab" onclick="switchAdminTab(2)">⚙️ 批次禁借設定</div>
+          <div id="admin-t3" class="admin-tab" onclick="switchAdminTab(3)">📊 統計圖表</div>
         </div>
+
         <div id="admin-page1">
           <div style="background:#e0f2f1; padding:20px; border-radius:12px; margin-bottom:15px; display:flex; gap:15px; align-items:center;">
             <label style="font-weight:bold;">📅 查看日期</label>
@@ -278,21 +304,26 @@
           </div>
           <div id="adminDailyList"></div>
         </div>
+
         <div id="admin-page2" style="display:none;">
-           <!-- 批次設定表單省略樣式，共用主樣式 -->
-           <div style="background:#e0f2f1; padding:20px; border-radius:12px;">
+          <div style="background:#e0f2f1; padding:20px; border-radius:12px;">
              <p style="color:#00695c; font-weight:bold;">⚠️ 請至原本試算表設定，或參考舊版表單介面</p>
-           </div>
+          </div>
         </div>
+
         <div id="admin-page3" style="display:none;">
-          <div style="position: relative; height: 350px; width: 100%; background:white; padding:20px; border-radius:10px; border: 1px solid #b2dfdb;"><canvas id="myChart"></canvas></div>
+          <div style="position: relative; height: 350px; width: 100%; background:white; padding:20px; border-radius:10px; border: 1px solid #b2dfdb;">
+            <canvas id="myChart"></canvas>
+          </div>
         </div>
       </div>
+
     </div>
     <div class="wavy-bottom"></div>
   </div>
 </div>
 
+<!-- 彈出視窗：預約確認 -->
 <div id="overlay" onclick="closeModal()"></div>
 <div id="modal">
   <h3 style="color:var(--primary); margin-top:0;">確認預約</h3>
@@ -305,9 +336,10 @@
   </select>
   <div id="classDiv"><select id="classSelect" class="modal-input"></select></div>
   <div id="otherDiv" style="display:none;"><input type="text" id="otherPurpose" class="modal-input" placeholder="請輸入用途"></div>
-  <button onclick="submitBooking()" style="width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size:12pt; box-shadow: 0 4px 10px rgba(18, 140, 126, 0.4);">送出預約</button>
+  <button onclick="submitBooking()" style="width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size:12pt; box-shadow: 0 4px 10px rgba(0, 131, 143, 0.4);">送出預約</button>
 </div>
 
+<!-- 彈出視窗：系統警告 (絕對在最上層) -->
 <div id="alertOverlay"></div>
 <div id="alertModal">
   <div id="alertMessage"></div>
@@ -315,9 +347,9 @@
 </div>
 
 <script>
-  // ================= 核心：API 呼叫封裝 (強化錯誤捕捉) =================
+  // ================= 核心：API 呼叫封裝 =================
   // ⚠️ 請確保此處為最新發佈（且權限為所有人）的 Google Apps Script 網址
-  const GAS_API_URL = "https://script.google.com/macros/s/AKfycbydeXYEg9dgAKB_FsAomg37crRb9OJER4w-Fm2c7fy6uOPv8CeyhW37JV9_OnrFyB-M/exec"; 
+  const GAS_API_URL = "在此貼上你部署後的 Google Apps Script 網址"; 
 
   const AppAPI = {
     async call(action, payload = {}) {
@@ -492,6 +524,7 @@
 
     if (viewId === 'booking') refreshBooking();
     else if (viewId === 'myrecords') loadMyRecordsData();
+    else if (viewId === 'admin') { switchAdminTab(1); loadAdminDaily(); }
   }
 
   function initDropdowns() {
@@ -676,7 +709,7 @@
     });
   }
 
-  // Proxy / Admin features logic reduced to fit single file cleanly
+  // ================= 管理員代理功能 =================
   function switchUserProxy() {
     const sel = document.getElementById('adminSwitchName');
     const newEmail = sel.value; const newName = sel.options[sel.selectedIndex].text;
@@ -695,6 +728,80 @@
     document.getElementById('displayUserName').innerText = originalAdminName;
     showSystemAlert(`🔄 已還原為管理員本人。`);
     if(document.getElementById('view-booking').classList.contains('active')) refreshBooking();
+  }
+
+  // ================= 補回：管理後台專用邏輯 =================
+  function switchAdminTab(n) {
+    const page1 = document.getElementById('admin-page1');
+    const page2 = document.getElementById('admin-page2');
+    const page3 = document.getElementById('admin-page3');
+    
+    if(page1) page1.style.display = n === 1 ? 'block' : 'none';
+    if(page2) page2.style.display = n === 2 ? 'block' : 'none';
+    if(page3) page3.style.display = n === 3 ? 'block' : 'none'; 
+    
+    document.getElementById('admin-t1').className = n === 1 ? 'admin-tab active' : 'admin-tab';
+    document.getElementById('admin-t2').className = n === 2 ? 'admin-tab active' : 'admin-tab';
+    document.getElementById('admin-t3').className = n === 3 ? 'admin-tab active' : 'admin-tab'; 
+    
+    if (n === 1) {
+      loadAdminDaily();
+    } else if (n === 3 && typeof loadChart === 'function') {
+      loadChart(); // 注意：目前此檔案省略了 Chart.js 詳細載入，可自行補回或留作佔位
+    }
+  }
+
+  function loadAdminDaily(isSilent = false) {
+    const box = document.getElementById('adminDailyList');
+    if (!box) return;
+    if (!isSilent) box.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>';
+    
+    const targetDate = document.getElementById('adminDate') ? document.getElementById('adminDate').value : getLocalTodayString();
+    
+    AppAPI.call('getAdminDailyRecords', { date: targetDate }).then(records => {
+      if(records) renderAdminDailyRecords(records);
+    }).catch(err => console.error("載入管理員紀錄失敗", err));
+  }
+
+  function renderAdminDailyRecords(records) {
+    const box = document.getElementById('adminDailyList');
+    if(!box) return;
+    if(!records || records.length === 0) { 
+      box.innerHTML = "<div style='text-align:center; padding:30px; color:#999; background:#fff; border-radius:8px; border:2px dashed #b2ebf2;'>本日無預約紀錄</div>"; 
+      return; 
+    }
+    
+    let html = '';
+    staticData.periods.forEach(p => {
+      const pRecords = records.filter(r => r.period === p.name);
+      if (pRecords.length > 0) {
+        html += `<h3 style="color:var(--admin-purple); margin: 20px 0 10px 0; border-bottom: 2px solid #e0f2f1; padding-bottom: 5px; font-size: 13pt;">📍 ${p.name}</h3>`;
+        html += pRecords.map(r => `
+          <div class="admin-card" style="background:#fff; padding:15px; border-radius:8px; border-left:5px solid var(--admin-purple); margin-bottom:10px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="font-weight:bold; font-size:12pt; color:#333;">${r.item}</div>
+            <div style="color:#666; margin-top:5px; font-size:11pt;">借用人：<span style="color:var(--admin-purple); font-weight:bold;">${r.user}</span> (${r.purpose})</div>
+            <div class="key-group" style="display:flex; gap:8px; margin-top:10px; align-items:center;">
+              <span style="font-weight:bold; color:#555; font-size:11pt;">🔑 鑰匙：</span>
+              <button class="key-btn" onclick="setKey(${r.rowId}, '未借出', this)" style="padding:6px 12px; border-radius:5px; cursor:pointer; border:1px solid #ccc; background:${r.keyStatus==='未借出'?'#95a5a6':'#fff'}; color:${r.keyStatus==='未借出'?'#fff':'#333'};">未借出</button>
+              <button class="key-btn" onclick="setKey(${r.rowId}, '已借出', this)" style="padding:6px 12px; border-radius:5px; cursor:pointer; border:1px solid #ccc; background:${r.keyStatus==='已借出'?'#e74c3c':'#fff'}; color:${r.keyStatus==='已借出'?'#fff':'#333'};">已借出</button>
+              <button class="key-btn" onclick="setKey(${r.rowId}, '已歸還', this)" style="padding:6px 12px; border-radius:5px; cursor:pointer; border:1px solid #ccc; background:${r.keyStatus==='已歸還'?'#27ae60':'#fff'}; color:${r.keyStatus==='已歸還'?'#fff':'#333'};">已歸還</button>
+            </div>
+          </div>
+        `).join('');
+      }
+    });
+    box.innerHTML = html;
+  }
+
+  function setKey(id, status, btn) {
+    const row = btn.parentElement;
+    row.querySelectorAll('button').forEach(b => {
+        b.style.background = '#fff'; b.style.color = '#333';
+    });
+    if(status==='未借出') { btn.style.background = '#95a5a6'; btn.style.color = '#fff'; }
+    if(status==='已借出') { btn.style.background = '#e74c3c'; btn.style.color = '#fff'; }
+    if(status==='已歸還') { btn.style.background = '#27ae60'; btn.style.color = '#fff'; }
+    AppAPI.call('updateKeyStatus', { id: id, status: status });
   }
 
 </script>
